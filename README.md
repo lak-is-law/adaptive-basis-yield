@@ -14,7 +14,7 @@ Then visit `http://localhost:8000`. On GitHub, enable Pages from the repository'
 
 ## Data
 
-`crop_yield.csv` is included in this folder (945 observations). It contains climate, soil, nutrients, crop type, and yield fields from the workspace's Kaggle referenced agriculture sensor dataset. The source records soil nitrogen, phosphorus, and potassium but not applied fertilizer; `fertilizer_kg_ha` is a proxy (N + P + K) and is never a measured application rate. The CSV is included as requested; verify the upstream dataset's exact attribution and license before redistribution. The dataset is modest, not a large corpus, and predictions should be validated with local field data before agronomic decisions.
+`crop_yield.csv` is included in this folder (945 rows, 10 crop labels). The related Kaggle listing is [Smart Farming Sensor Data for Yield Prediction by Atharva Soundankar](https://www.kaggle.com/datasets/atharvasoundankar/smart-farming-sensor-data-for-yield-prediction). The local CSV was already present in the workspace and is not a verified raw Kaggle download; confirm exact row-level provenance and license against Kaggle before treating it as source data or redistributing it. The source fields available here include rainfall, temperature, soil pH/moisture, N, P, K, and yield, but not applied fertilizer. `fertilizer_kg_ha` is an N + P + K proxy, never a measured application rate. This dataset is a small demo sample, not a vast corpus; predictions need local validation before agronomic decisions.
 
 ## Project files
 

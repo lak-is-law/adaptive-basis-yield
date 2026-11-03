@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee"><meta name="description" content="Explore crop yield estimates with an adaptive basis machine learning model.">
+  <title>Fieldnote — Adaptive Yield Model</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="rail"><a class="brand" href="#"><span class="brand-mark">f.</span><span>fieldnote</span></a><div class="rail-label">WORKSPACE</div><a class="nav active" href="#predict"><span>⌁</span> Yield studio</a><a class="nav" href="#method"><span>◌</span> Model notes</a><div class="rail-bottom"><div class="avatar">AG</div><div><b>Agri Lab</b><small>Field research</small></div><span class="dots">···</span></div></aside>
+  <main id="predict">
+    <header class="topbar"><div class="crumb">Projects <span>/</span> <b>Adaptive yield model</b></div><div class="top-actions"><span class="live"><i></i> MODEL READY</span><button class="icon-btn" aria-label="Help">?</button></div></header>
+    <section class="intro"><div class="eyebrow"><span class="eyebrow-line"></span> PRECISION AGRICULTURE <span class="mono">01 / 04</span></div><h1>Read the field.<br><em>Grow with confidence.</em></h1><p>A flexible basis model for estimating crop yield as weather, nutrients, and soil conditions shift across the field.</p></section>
+    <section class="layout">
+      <div class="form-card"><div class="card-head"><div><div class="step">01 — FIELD PROFILE</div><h2>Your growing conditions</h2></div><span class="leaf">↗</span></div>
+        <form id="predict-form">
+          <label class="field full"><span>Crop variety</span><select id="crop_type"></select></label>
+          <div class="section-label"><span>CLIMATE</span><i></i></div>
+          <label class="field"><span>Rainfall <small>mm / season</small></span><div class="input-wrap"><input id="rainfall_mm" type="number" min="0" max="1000" value="185" required><b>mm</b></div><input class="slider" data-for="rainfall_mm" type="range" min="0" max="450" value="185"></label>
+          <label class="field"><span>Temperature <small>°C average</small></span><div class="input-wrap"><input id="temperature_c" type="number" min="-5" max="60" value="25" required><b>°C</b></div><input class="slider" data-for="temperature_c" type="range" min="-5" max="45" value="25"></label>
+          <div class="section-label"><span>SOIL & INPUTS</span><i></i></div>
+          <label class="field"><span>Fertilizer proxy <small>N + P + K</small></span><div class="input-wrap"><input id="fertilizer_kg_ha" type="number" min="0" max="500" value="150" required><b>kg*</b></div><input class="slider" data-for="fertilizer_kg_ha" type="range" min="0" max="400" value="150"></label>
+          <label class="field"><span>Soil pH <small>acidity</small></span><div class="input-wrap"><input id="soil_pH" type="number" min="0" max="14" step="0.1" value="6.5" required><b>pH</b></div><input class="slider" data-for="soil_pH" type="range" min="0" max="14" step="0.1" value="6.5"></label>
+          <details class="advanced"><summary>More soil measurements <span>+</span></summary><div class="advanced-grid"><label class="field"><span>Nitrogen</span><div class="input-wrap"><input id="nitrogen_mg_kg" type="number" value="70"><b>mg/kg</b></div></label><label class="field"><span>Phosphorus</span><div class="input-wrap"><input id="phosphorus_mg_kg" type="number" value="45"><b>mg/kg</b></div></label><label class="field"><span>Potassium</span><div class="input-wrap"><input id="potassium_mg_kg" type="number" value="40"><b>mg/kg</b></div></label><label class="field"><span>Soil moisture</span><div class="input-wrap"><input id="soil_moisture_pct" type="number" value="50"><b>%</b></div></label></div></details>
+          <button class="predict-btn" type="submit"><span>Estimate yield</span><span class="arrow">↗</span></button>
+        </form>
+        <p class="fineprint">* Fertilizer is estimated from soil NPK readings in this dataset.</p>
+      </div>
+      <div class="result-column"><div class="result-card" id="result-card"><div class="result-top"><div><div class="step">02 — MODEL ESTIMATE</div><h2>Potential yield</h2></div><span class="status">●&nbsp; READY</span></div><div class="yield-number" id="yield-number">—<small>kg / ha</small></div><div class="yield-tonnes" id="yield-tonnes">Enter field conditions to see an estimate</div><div class="meter"><div class="meter-fill" id="meter-fill"></div></div><div class="meter-labels"><span>LOW</span><span>FIELD RANGE</span><span>HIGH</span></div><div class="result-rule"></div><div class="result-meta"><span>Model confidence band</span><b id="confidence">—</b></div><div class="result-meta"><span>Reference crop median</span><b id="median">—</b></div><div class="result-meta"><span>Closest input range</span><b id="range-label">Awaiting inputs</b></div><div class="result-note"><span>✳</span><p id="insight">Predictions use patterns across rainfall, temperature, nutrient, and soil measurements.</p></div></div>
+        <div class="data-card"><div class="data-icon">▤</div><div><b>Grounded in field observations</b><p><span id="row-count">945</span> records · 9 crop varieties · source data included</p></div><a href="crop_yield.csv" download>CSV ↓</a></div>
+      </div>
+    </section>
+    <section class="method" id="method"><div><div class="step">THE APPROACH</div><h2>Relationships change.<br><em>The model adapts.</em></h2></div><p>Instead of assuming one straight-line response, radial basis functions create overlapping local curves. That lets rainfall or nutrients have different effects in low, medium, and high ranges. Estimates are weighted toward similar field observations.</p><div class="curve"><svg viewBox="0 0 400 90" preserveAspectRatio="none" aria-label="Illustration of overlapping basis curves"><path d="M0 75 C50 75 55 18 110 18 S170 76 220 76 S280 24 330 24 S375 72 400 72"/><path d="M0 75 C30 75 60 57 100 57 S160 28 200 28 S260 58 300 58 S360 40 400 40"/><path d="M0 45 C40 45 60 70 105 70 S160 43 210 43 S270 67 320 67 S370 48 400 48"/></svg><div class="curve-labels"><span>LOW INPUT</span><span>MEDIUM</span><span>HIGH INPUT</span></div></div></section>
+    <footer><span>FIELDNOTE <b>·</b> ADAPTIVE BASIS MODEL</span><span>Built for exploration. Validate locally before decisions.</span></footer>
+  </main>
+</div><script src="app.js"></script>
+</body></html>

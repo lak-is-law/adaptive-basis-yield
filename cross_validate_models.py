@@ -1,4 +1,4 @@
-"""Five-fold validation for the Unit 2 classifier and Unit 5 yield models.
+"""Five-fold validation for the Unit 5 yield models.
 
 Run after `python3 -m pip install -r requirements.txt`:
     python3 cross_validate_models.py
@@ -7,37 +7,21 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import accuracy_score, f1_score, mean_absolute_error, mean_squared_error, r2_score
-from sklearn.model_selection import KFold, StratifiedKFold
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import KFold
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import OneHotEncoder
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 SEED = 42
 FOLDS = 5
 
 
-def unit2_cv():
-    data = pd.read_csv(ROOT / "crop-water-stress-prediction/dataset.csv").head(5000)
-    X, y = data.iloc[:, :-1], data.iloc[:, -1]
-    cv = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=SEED)
-    scores = {"accuracy": [], "macro_f1": []}
-    for train, test in cv.split(X, y):
-        model = make_pipeline(StandardScaler(), SVC(kernel="rbf"))
-        model.fit(X.iloc[train], y.iloc[train])
-        pred = model.predict(X.iloc[test])
-        scores["accuracy"].append(accuracy_score(y.iloc[test], pred))
-        scores["macro_f1"].append(f1_score(y.iloc[test], pred, average="macro"))
-    return scores
-
-
 def unit5_cv():
-    data = pd.read_csv(ROOT / "adaptive-basis-yield/crop_yield.csv")
+    data = pd.read_csv(ROOT / "crop_yield.csv")
     numeric = ["rainfall_mm", "temperature_c", "fertilizer_kg_ha", "nitrogen_mg_kg",
                "phosphorus_mg_kg", "potassium_mg_kg", "soil_pH", "soil_moisture_pct"]
     target = data["yield_kg_ha"]
@@ -81,11 +65,8 @@ def summarize(values):
 
 
 if __name__ == "__main__":
-    print(f"Seed={SEED}; folds={FOLDS}; folds shuffled; Unit 2 stratified")
-    u2, u5 = unit2_cv(), unit5_cv()
-    print("Unit 2 (first 5,000 rows):")
-    for key, values in u2.items():
-        print(f"  {key}: {np.mean(values):.4f} ± {np.std(values, ddof=1):.4f}")
+    print(f"Seed={SEED}; folds={FOLDS}; folds shuffled")
     print("Unit 5 (kg/ha except R²):")
+    u5 = unit5_cv()
     for key, values in u5.items():
         print(f"  {key}: {summarize(values)}")

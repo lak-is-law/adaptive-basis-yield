@@ -23,7 +23,7 @@ python3 random_forest_model.py
 python3 cross_validate_models.py
 ```
 
-The linear model uses rainfall, soil pH, and temperature. The Random Forest uses the numeric soil/weather/NPK fields plus crop type. Both print holdout MAE, RMSE, and R². The five-fold validation script evaluates the Unit 2 RBF classifier with stratified folds and all three Unit 5 candidates with the same shuffled folds; it prints mean ± standard deviation.
+The linear model uses rainfall, soil pH, and temperature. The Random Forest uses the numeric soil/weather/NPK fields plus crop type. Both print holdout MAE, RMSE, and R². The five-fold validation script evaluates all three Unit 5 candidates on identical shuffled folds and prints mean ± standard deviation.
 
 ## Data
 
